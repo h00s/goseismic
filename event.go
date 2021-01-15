@@ -18,24 +18,24 @@ import (
         -4.0
       ]
     },
-		"type":"Feature",
-		"id":"20201230_0000082",
-		"properties":{
-			"lastupdate":"2020-12-30T08:47:00.0Z",
-			"magtype":"md",
-			"evtype":"ke",
-			"lon":-121.2,
-			"auth":"NC",
-			"lat":36.6,
-			"depth":4.0,
-			"unid":"20201230_0000082",
-			"mag":2.4,
-			"time":"2020-12-30T08:45:29.9Z",
-			"source_id":"934165",
-			"source_catalog":"EMSC-RTS",
-			"flynn_region":"CENTRAL CALIFORNIA"
-		}
-	}
+    "type":"Feature",
+    "id":"20201230_0000082",
+    "properties":{
+      "lastupdate":"2020-12-30T08:47:00.0Z",
+      "magtype":"md",
+      "evtype":"ke",
+      "lon":-121.2,
+      "auth":"NC",
+      "lat":36.6,
+      "depth":4.0,
+      "unid":"20201230_0000082",
+      "mag":2.4,
+      "time":"2020-12-30T08:45:29.9Z",
+      "source_id":"934165",
+      "source_catalog":"EMSC-RTS",
+      "flynn_region":"CENTRAL CALIFORNIA"
+    }
+  }
 }
 */
 type Event struct {
