@@ -8,3 +8,10 @@ type Seismic struct {
 	connected bool
 	Events    chan Event
 }
+
+// New creates new Seismic value which contains Event channel for receiving seismic events
+func New() *Seismic {
+	return &Seismic{
+		Events: make(chan Event),
+	}
+}
