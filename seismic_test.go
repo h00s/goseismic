@@ -8,5 +8,6 @@ func TestNew(t *testing.T) {
 		t.Errorf("Seismic is nil on New()")
 	}
 	s.Connect()
+	s.ReadMessages()
 	s.Disconnect()
 }
