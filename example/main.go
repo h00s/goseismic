@@ -10,6 +10,9 @@ import (
 
 func main() {
 	s := goseismic.NewSeismic()
+	s.Debug = true
+	s.KeepAlive = true
+	s.Connect()
 	defer s.Disconnect()
 
 	interrupt := make(chan os.Signal, 1)
