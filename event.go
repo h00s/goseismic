@@ -43,7 +43,7 @@ type Event struct {
 	Data   struct {
 		Geometry struct {
 			Type        string     `json:"type"`
-			Coordinates [3]float32 `json:"coordinates"`
+			Coordinates [3]float64 `json:"coordinates"`
 		} `json:"geometry"`
 		Type       string `json:"type"`
 		ID         string `json:"id"`
@@ -51,12 +51,12 @@ type Event struct {
 			LastUpdate    time.Time `json:"lastupdate"`
 			MagType       string    `json:"magtype"`
 			EvType        string    `json:"evtype"`
-			Longitude     float32   `json:"lon"`
+			Longitude     float64   `json:"lon"`
 			Auth          string    `json:"auth"`
-			Latitude      float32   `json:"lat"`
-			Depth         float32   `json:"depth"`
+			Latitude      float64   `json:"lat"`
+			Depth         float64   `json:"depth"`
 			UnID          string    `json:"unid"`
-			Magnitude     float32   `json:"mag"`
+			Magnitude     float64   `json:"mag"`
 			Time          time.Time `json:"time"`
 			SourceID      string    `json:"source_id"`
 			SourceCatalog string    `json:"source_catalog"`
