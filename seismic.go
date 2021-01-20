@@ -20,12 +20,13 @@ type Seismic struct {
 	Events    chan Event
 }
 
-// New creates new Seismic value which contains Event channel for receiving seismic events
-func New() *Seismic {
+// NewSeismic creates new Seismic value which contains Event channel for receiving seismic events
+func NewSeismic() *Seismic {
 	s := &Seismic{
 		KeepAlive: true,
 		Events:    make(chan Event),
 	}
+	go s.readMessages()
 	go s.sendPings()
 	return s
 }
@@ -48,22 +49,20 @@ func (s *Seismic) Connect() {
 }
 
 // ReadMessages reads new events (json) from seismic portal websocket, parse it and sends to channel
-func (s *Seismic) ReadMessages() {
-	go func() {
-		for {
-			if !s.connected {
-				s.Connect()
-			}
-			_, message, err := s.conn.ReadMessage()
-			if err == nil {
-				if event, err := ParseEvent(message); err == nil {
-					s.Events <- event
-				}
-			} else {
-				s.Disconnect()
-			}
+func (s *Seismic) readMessages() {
+	for {
+		if !s.connected {
+			s.Connect()
 		}
-	}()
+		_, message, err := s.conn.ReadMessage()
+		if err == nil {
+			if event, err := ParseEvent(message); err == nil {
+				s.Events <- event
+			}
+		} else {
+			s.Disconnect()
+		}
+	}
 }
 
 // Disconnect disconnects from Seismic portal websocket
