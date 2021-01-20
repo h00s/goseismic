@@ -39,10 +39,10 @@ import (
 }
 */
 type Event struct {
-	Action string
+	Action string `json:"action"`
 	Data   struct {
 		Geometry struct {
-			Type        float32    `json:"type"`
+			Type        string     `json:"type"`
 			Coordinates [3]float32 `json:"coordinates"`
 		} `json:"geometry"`
 		Type       string `json:"type"`
@@ -58,11 +58,11 @@ type Event struct {
 			UnID          string    `json:"unid"`
 			Magnitude     float32   `json:"mag"`
 			Time          time.Time `json:"time"`
-			SourceID      string    `json:"string"`
+			SourceID      string    `json:"source_id"`
 			SourceCatalog string    `json:"source_catalog"`
 			FlynnRegion   string    `json:"flynn_region"`
-		} `json:"properties" binding:"required"`
-	} `json:"data" binding:"required"`
+		} `json:"properties"`
+	} `json:"data"`
 }
 
 // ParseEvent converts received message from websocket to Event struct
