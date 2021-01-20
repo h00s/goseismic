@@ -9,20 +9,25 @@ import (
 
 const seismicURLHost = "www.seismicportal.eu"
 const seismicURLPath = "/standing_order/websocket"
-const reconnectWait = 60 * time.Second
+const reconnectWait = 15 * time.Second
+const pingWait = 60 * time.Second
 
 // Seismic struct is type used for receiving events from websocket
 type Seismic struct {
 	conn      *websocket.Conn
 	connected bool
+	KeepAlive bool
 	Events    chan Event
 }
 
 // New creates new Seismic value which contains Event channel for receiving seismic events
 func New() *Seismic {
-	return &Seismic{
-		Events: make(chan Event),
+	s := &Seismic{
+		KeepAlive: true,
+		Events:    make(chan Event),
 	}
+	go s.sendPings()
+	return s
 }
 
 // Connect connects to Seismic portal websocket
@@ -34,6 +39,8 @@ func (s *Seismic) Connect() {
 		s.conn, _, err = websocket.DefaultDialer.Dial(u.String(), nil)
 		if err == nil {
 			s.connected = true
+			s.conn.SetPongHandler(s.pongHandler)
+			s.conn.SetCloseHandler(s.closeHandler)
 			return
 		}
 		time.Sleep(reconnectWait)
@@ -63,4 +70,26 @@ func (s *Seismic) ReadMessages() {
 func (s *Seismic) Disconnect() error {
 	s.connected = false
 	return s.conn.Close()
+}
+
+// sendPings sends control messages (ping) every pingWait interval to keep connection alive
+func (s *Seismic) sendPings() {
+	ticker := time.NewTicker(pingWait)
+	defer ticker.Stop()
+
+	for {
+		<-ticker.C
+		if s.connected && s.KeepAlive {
+			s.conn.WriteMessage(websocket.PingMessage, []byte{})
+		}
+	}
+}
+
+func (s *Seismic) pongHandler(string) error {
+	return nil
+}
+
+func (s *Seismic) closeHandler(code int, text string) error {
+	s.connected = false
+	return nil
 }
