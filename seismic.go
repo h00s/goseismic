@@ -81,9 +81,12 @@ func (s *Seismic) readMessages() {
 
 // Disconnect disconnects from Seismic portal websocket
 func (s *Seismic) Disconnect() error {
-	s.connected = false
-	s.log("Disconnecting from websocket...")
-	return s.conn.Close()
+	if s.connected {
+		s.connected = false
+		s.log("Disconnecting from websocket...")
+		return s.conn.Close()
+	}
+	return nil
 }
 
 // sendPings sends control messages (ping) every pingWait interval to keep connection alive
@@ -105,6 +108,7 @@ func (s *Seismic) sendPings() {
 }
 
 func (s *Seismic) pongHandler(string) error {
+	s.log("Received pong.")
 	return nil
 }
 
