@@ -24,11 +24,13 @@ type Seismic struct {
 
 // NewSeismic creates new Seismic value which contains Event channel for receiving seismic events
 func NewSeismic() *Seismic {
-	return &Seismic{
+	s := &Seismic{
 		KeepAlive: true,
 		Debug:     false,
 		Events:    make(chan Event),
 	}
+	go s.sendPings()
+	return s
 }
 
 // Connect connects to Seismic portal websocket
@@ -71,6 +73,8 @@ func (s *Seismic) readMessages() {
 			}
 		} else {
 			s.log("Error while reading message from websocket:", err)
+			s.Disconnect()
+			break
 		}
 	}
 }
