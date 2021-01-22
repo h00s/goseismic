@@ -2,13 +2,12 @@
 
 [![Travis CI Build Status](https://travis-ci.com/h00s/goseismic.svg?branch=master)](https://travis-ci.com/github/h00s/goseismic)
 
-goseismic is library for receiving (near) realtime notifications about earthquakes using websockets from [Seismicportal](https://www.seismicportal.eu/realtime.html).
-JSON message is received, parsed to `goseismic.Event` and sent to channel when an event is inserted or updated. Depending on the event, you can use bots, push notification etc. to
-further process the information.
+goseismic is library for receiving (near) realtime notifications about earthquakes using websockets from [SeismicPortal](https://www.seismicportal.eu/realtime.html).
+Using goseismic, received JSON message is parsed to `goseismic.Event` and sent to channel when an event is inserted or updated. Depending on the event, you can use bots, push notification etc. to further process the information.
 
 ## Installation
 
-go get -u github.com/h00s/goseismic
+`go get -u github.com/h00s/goseismic`
 
 ## Usage
 
@@ -16,7 +15,7 @@ Information about earthquake events are sent in JSON thru websockets. This is ex
 
 ```json
 {
-  "action":"update",
+  "action":"create",
   "data":{
     "geometry":{
       "type":"Point",
@@ -47,6 +46,8 @@ Information about earthquake events are sent in JSON thru websockets. This is ex
 }
 ```
 
+Possible values for `action` are `created` or `updated` depending if it's new event or update on one of the previous events.
+
 Received events are parsed and sent to `Seismic.Events` channel which you can read and further process. This is simple example how to receive events and display them (check `example/main.go` for comments):
 
 ```go
@@ -62,8 +63,6 @@ import (
 
 func main() {
 	s := goseismic.NewSeismic()
-	s.Debug = true
-	s.KeepAlive = true
 	s.Connect()
 	defer s.Disconnect()
 
