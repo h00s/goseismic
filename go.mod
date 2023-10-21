@@ -1,7 +1,5 @@
 module github.com/h00s/goseismic
 
-go 1.15
+go 1.21
 
-require (
-  github.com/gorilla/websocket v1.4.2
-)
+require github.com/gorilla/websocket v1.5.0
